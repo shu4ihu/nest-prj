@@ -9,11 +9,19 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         const adapter = new PrismaMariaDb(process.env.DATABASE_URL!);
         super({
             adapter,
-            log: ['query', 'info', 'warn', 'error'],
-        });
+            log: [
+                { emit: 'event', level: 'query' },
+                'info', 'warn', 'error',
+            ],
+        } as any);
     }
 
     async onModuleInit() {
+        (this as any).$on('query', (e: any) => {
+            Logger.debug(`Query: ${e.query}`);
+            Logger.debug(`Params: ${e.params}`);
+            Logger.debug(`Duration: ${e.duration}ms`);
+        });
         await this.$connect();
         Logger.log('Prisma connected');
     }

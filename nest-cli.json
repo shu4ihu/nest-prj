@@ -10,13 +10,13 @@
   "monorepo": true,
   "root": "apps/nest-prj",
   "projects": {
-    "my-app": {
+    "auth": {
       "type": "application",
-      "root": "apps/my-app",
+      "root": "apps/auth",
       "entryFile": "main",
-      "sourceRoot": "apps/my-app/src",
+      "sourceRoot": "apps/auth/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/my-app/tsconfig.app.json"
+        "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
     },
     "nest-prj": {

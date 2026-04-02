@@ -27,3 +27,23 @@ export type User = Prisma.UserModel
  * 
  */
 export type Post = Prisma.PostModel
+/**
+ * Model Role
+ * 
+ */
+export type Role = Prisma.RoleModel
+/**
+ * Model Menu
+ * 
+ */
+export type Menu = Prisma.MenuModel
+/**
+ * Model UserRole
+ * 
+ */
+export type UserRole = Prisma.UserRoleModel
+/**
+ * Model RoleMenu
+ * 
+ */
+export type RoleMenu = Prisma.RoleMenuModel

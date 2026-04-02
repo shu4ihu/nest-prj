@@ -52,7 +52,11 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Post: 'Post'
+  Post: 'Post',
+  Role: 'Role',
+  Menu: 'Menu',
+  UserRole: 'UserRole',
+  RoleMenu: 'RoleMenu'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,7 +79,10 @@ export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   name: 'name',
-  password: 'password'
+  password: 'password',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -90,6 +97,57 @@ export const PostScalarFieldEnum = {
 } as const
 
 export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+
+
+export const RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  dataScope: 'dataScope',
+  status: 'status',
+  sort: 'sort',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof RoleScalarFieldEnum]
+
+
+export const MenuScalarFieldEnum = {
+  id: 'id',
+  parentId: 'parentId',
+  name: 'name',
+  type: 'type',
+  permission: 'permission',
+  path: 'path',
+  icon: 'icon',
+  sort: 'sort',
+  visible: 'visible',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MenuScalarFieldEnum = (typeof MenuScalarFieldEnum)[keyof typeof MenuScalarFieldEnum]
+
+
+export const UserRoleScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roleId: 'roleId'
+} as const
+
+export type UserRoleScalarFieldEnum = (typeof UserRoleScalarFieldEnum)[keyof typeof UserRoleScalarFieldEnum]
+
+
+export const RoleMenuScalarFieldEnum = {
+  id: 'id',
+  roleId: 'roleId',
+  menuId: 'menuId'
+} as const
+
+export type RoleMenuScalarFieldEnum = (typeof RoleMenuScalarFieldEnum)[keyof typeof RoleMenuScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -123,4 +181,25 @@ export const PostOrderByRelevanceFieldEnum = {
 } as const
 
 export type PostOrderByRelevanceFieldEnum = (typeof PostOrderByRelevanceFieldEnum)[keyof typeof PostOrderByRelevanceFieldEnum]
+
+
+export const RoleOrderByRelevanceFieldEnum = {
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  dataScope: 'dataScope'
+} as const
+
+export type RoleOrderByRelevanceFieldEnum = (typeof RoleOrderByRelevanceFieldEnum)[keyof typeof RoleOrderByRelevanceFieldEnum]
+
+
+export const MenuOrderByRelevanceFieldEnum = {
+  name: 'name',
+  type: 'type',
+  permission: 'permission',
+  path: 'path',
+  icon: 'icon'
+} as const
+
+export type MenuOrderByRelevanceFieldEnum = (typeof MenuOrderByRelevanceFieldEnum)[keyof typeof MenuOrderByRelevanceFieldEnum]
 
