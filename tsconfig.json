@@ -27,6 +27,24 @@
       ],
       "@app/shared/*": [
         "libs/shared/src/*"
+      ],
+      "@app/auth": [
+        "apps/backend/auth/src"
+      ],
+      "@app/auth/*": [
+        "apps/backend/auth/src/*"
+      ],
+      "@app/user": [
+        "apps/backend/user/src"
+      ],
+      "@app/user/*": [
+        "apps/backend/user/src/*"
+      ],
+      "@app/permission": [
+        "apps/backend/permission/src"
+      ],
+      "@app/permission/*": [
+        "apps/backend/permission/src/*"
       ]
     }
   }

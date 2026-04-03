@@ -13,13 +13,13 @@
     "start": "nest start --watch",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/apps/nest-prj/main",
+    "start:prod": "node dist/apps/backend/server/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/nest-prj/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/backend/server/test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -90,7 +90,10 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1"
+      "^@app/shared(|/.*)$": "<rootDir>/libs/shared/src/$1",
+      "^@app/auth(|/.*)$": "<rootDir>/apps/backend/auth/src/$1",
+      "^@app/user(|/.*)$": "<rootDir>/apps/backend/user/src/$1",
+      "^@app/permission(|/.*)$": "<rootDir>/apps/backend/permission/src/$1"
     }
   },
   "prisma": {
