@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   ParseIntPipe,
   Patch,
@@ -17,10 +18,12 @@ import {
 } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { QueryUserDto } from './dto/query-user.dto';
 import { AssignRolesDto } from '../../permission/src/dto/assign-roles.dto';
 import { CurrentUser } from '../../auth/src/decorators/current-user.decorator';
 import { Public } from '../../auth/src/decorators/public.decorator';
 import { RequirePermission } from '../../auth/src/decorators/require-permission.decorator';
+import { PaginationDto } from '@app/shared';
 
 @ApiTags('用户')
 @ApiBearerAuth()
@@ -37,15 +40,21 @@ export class UserController {
   @Get()
   @RequirePermission('user:query')
   @ApiOperation({ summary: '用户列表' })
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'pageSize', required: false, type: Number })
   findAll(
     @CurrentUser() user: any,
-    @Query('page') page?: number,
-    @Query('pageSize') pageSize?: number,
+    @Query() pagination: PaginationDto,
   ) {
     const dataScope = user.roles?.[0]?.dataScope ?? 'SELF';
-    return this.userService.findAll(page, pageSize, user.id, dataScope);
+    return this.userService.findAll(pagination.page, pagination.pageSize, user.id, dataScope);
+  }
+
+  @Post('getList')
+  @RequirePermission('user:query')
+  @ApiOperation({ summary: '分页获取用户列表（支持邮箱/姓名模糊查询）' })
+  getList(@Body() user: QueryUserDto, @CurrentUser() currentUser: any) {
+    Logger.log(user);
+    Logger.log(currentUser.id);
+    return this.userService.getList(user.page, user.pageSize, user.email, user.name, currentUser.id, user.status);
   }
 
   @Get(':id')

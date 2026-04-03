@@ -102,6 +102,38 @@ remove(@Param('id') id: number) { ... }
 3. Controller 上添加 `@RequirePermission('module:action')`
 4. 在 `error-codes.ts` 中按分段（30xxx、40xxx...）添加错误码
 
+### 通用分页
+
+分页工具位于 `libs/shared/src/pagination/pagination.dto.ts`，通过 `@app/shared` 导入。
+
+**Controller 用法**：
+```typescript
+import { PaginationDto } from '@app/shared';
+
+@Get()
+findAll(@Query() pagination: PaginationDto) {
+  return this.service.findAll(pagination.page, pagination.pageSize);
+}
+```
+
+**Service 用法**：
+```typescript
+import { paginate, PaginatedResult } from '@app/shared';
+
+async findAll(page = 1, pageSize = 10): Promise<PaginatedResult<T>> {
+  return paginate(
+    (skip, take) => this.prisma.xxx.findMany({ where, skip, take, ... }),
+    () => this.prisma.xxx.count({ where }),
+    page,
+    pageSize,
+  );
+}
+```
+
+**返回格式**：`{ items, total, page, pageSize, totalPages }`
+
+**带搜索条件的分页**：继承 `PaginationDto` 扩展查询 DTO，如 `QueryUserDto` 增加了 `email`、`name` 字段，Service 中通过 `where: { email: { contains: query.email } }` 实现模糊搜索
+
 ### 环境变量
 
 `.env` 文件位于项目根目录：

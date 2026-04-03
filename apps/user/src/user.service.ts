@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { PrismaService, BusinessException, ErrorCode } from '@app/shared';
+import { PrismaService, BusinessException, ErrorCode, PaginationDto, paginate, PaginatedResult } from '@app/shared';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -111,26 +111,65 @@ export class UserService {
     });
   }
 
-  async findAll(page = 1, pageSize = 10, currentUserId?: number, dataScope?: string) {
-    const skip = (page - 1) * pageSize;
+  async findAll(
+    page = 1,
+    pageSize = 10,
+    currentUserId?: number,
+    dataScope?: string,
+  ): Promise<PaginatedResult<{ id: number; email: string; name: string | null; status: boolean; createdAt: Date }>> {
     const where: any = {};
-
-    // 数据权限过滤
     if (dataScope === 'SELF' && currentUserId) {
       where.id = currentUserId;
     }
 
-    const [items, total] = await Promise.all([
-      this.prisma.user.findMany({
-        where,
-        skip,
-        take: pageSize,
-        select: { id: true, email: true, name: true, status: true, createdAt: true },
-        orderBy: { id: 'asc' },
-      }),
-      this.prisma.user.count({ where }),
-    ]);
-    return { items, total, page, pageSize };
+    return paginate(
+      (skip, take) =>
+        this.prisma.user.findMany({
+          where,
+          skip,
+          take,
+          select: { id: true, email: true, name: true, status: true, createdAt: true },
+          orderBy: { id: 'asc' },
+        }),
+      () => this.prisma.user.count({ where }),
+      page,
+      pageSize,
+    );
+  }
+
+  async getList(
+    page = 1,
+    pageSize = 10,
+    email?: string,
+    name?: string,
+    currentUserId?: number,
+    dataScope?: string,
+  ) {
+    const where: any = {};
+
+    if (dataScope === 'SELF' && currentUserId) {
+      where.id = currentUserId;
+    }
+    if (email) {
+      where.email = { contains: email };
+    }
+    if (name) {
+      where.name = { contains: name };
+    }
+
+    return paginate(
+      (skip, take) =>
+        this.prisma.user.findMany({
+          where,
+          skip,
+          take,
+          select: { id: true, email: true, name: true, status: true, createdAt: true },
+          orderBy: { id: 'asc' },
+        }),
+      () => this.prisma.user.count({ where }),
+      page,
+      pageSize,
+    );
   }
 
   async createBatch(count: number) {
